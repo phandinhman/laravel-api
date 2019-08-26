@@ -7,7 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
 
-class ArticleRequest extends BaseAPIRequest
+class BaseAPIRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -16,7 +16,7 @@ class ArticleRequest extends BaseAPIRequest
      */
     public function authorize()
     {
-        return true;
+        return false;
     }
 
     /**
@@ -27,17 +27,13 @@ class ArticleRequest extends BaseAPIRequest
     public function rules()
     {
         return [
-            'title' => 'required|max:255',
-            'body' => 'required',
+            //
         ];
     }
 
-    public function messages()
+    protected function failedValidation(Validator $validator)
     {
-        return [
-            'title.required' => 'A title is required',
-            'body.required'  => 'A message is required',
-        ];
+        $collection  = collect($validator->errors())->flatten()->all();
+        throw new HttpResponseException(response()->json($collection, JsonResponse::HTTP_UNPROCESSABLE_ENTITY));
     }
 }
-
