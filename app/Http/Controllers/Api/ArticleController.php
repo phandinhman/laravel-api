@@ -7,6 +7,7 @@ use App\Models\Article;
 use App\Http\Resources\Article as ArticleResource;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ArticleController extends Controller
 {

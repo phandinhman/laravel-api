@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 */
 Route::group(['prefix' => 'auth'], function() {
     Route::post('login', 'Api\AuthController@login');
+    Route::post('signup', 'Api\AuthController@signup');
 });
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
@@ -22,3 +23,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 
 Route::resource('articles', 'Api\ArticleController');
+
+Route::fallback(function() {
+    return response()->json(['message' => 'Page Not Found.'], 404);
+});
